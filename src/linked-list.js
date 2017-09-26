@@ -14,7 +14,7 @@ class LinkedList {
                 this._tail = node;
             }
             else {
-                this._tail = node;
+                this._tail.next = node;
                 node.prev = this._tail;
                 this._tail = node;
             }
@@ -41,7 +41,20 @@ class LinkedList {
             return false;
     }
 
-    clear() {}
+    clear() {
+        var tempNode;
+        while(this.length > 0) {
+            tempNode = this._tail.prev;
+            tempNode.next = null;
+            this._tail = tempNode;
+            if(this.length == 1) {
+                this._head = null;
+                this._tail = null; 
+            }
+            this.length--
+            console.log(this.length);
+        }
+    }
 
     deleteAt(index) {}
 
@@ -51,5 +64,8 @@ class LinkedList {
 }
 
 list = new LinkedList();
-console.log(list.append());
+list.append(1);
+list.append(2);
+list.append(3);
+console.log(list);
 module.exports = LinkedList;
