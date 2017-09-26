@@ -45,7 +45,7 @@ class LinkedList {
 
     insertAt(index, data) {
         var node = new Node(data),
-            tempNode = this._head;
+            tempNode = this._head.next;
         if(index < 0 || index > this.length) {
             return undefined;
         }
@@ -56,7 +56,7 @@ class LinkedList {
             this.length++;
             return this;
         }
-        for(i = 1; i < this.length; i++) {
+        for(var i = 1; i < this.length; i++) {
             if (i == index ) {
                 node.next = tempNode;
                 node.prev = tempNode.prev;
