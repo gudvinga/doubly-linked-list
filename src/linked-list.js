@@ -44,7 +44,8 @@ class LinkedList {
     }
 
     insertAt(index, data) {
-        var node = new Node(data);
+        var node = new Node(data),
+            tempNode = this._head;
         if(index < 0 || index > this.length) {
             return undefined;
         }
@@ -53,12 +54,25 @@ class LinkedList {
             this._head.prev = node;
             this._head = node;
             this.length++;
+            return this;
+        }
+        for(i = 1; i < this.length; i++) {
+            if (i == index ) {
+                node.next = tempNode;
+                node.prev = tempNode.prev;
+                tempNode.prev.next = node;
+                tempNode.prev = node;
+                this.length++
+                return this;
+            }
+            tempNode = tempNode.next
         }
         if(index == this.length) {
             node.prev = this._tail;
             this._tail.next = node;
             this._tail = node;
             this.length++;
+            return this;
         }
     }
 
