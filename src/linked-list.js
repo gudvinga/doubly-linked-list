@@ -43,7 +43,24 @@ class LinkedList {
         }
     }
 
-    insertAt(index, data) {}
+    insertAt(index, data) {
+        var node = new Node(data);
+        if(index < 0 || index > this.length) {
+            return undefined;
+        }
+        if(index == 0) {
+            node.next = this._head;
+            this._head.prev = node;
+            this._head = node;
+            this.length++;
+        }
+        if(index == this.length) {
+            node.prev = this._tail;
+            this._tail.next = node;
+            this._tail = node;
+            this.length++;
+        }
+    }
 
     isEmpty() {
         if(this.length == 0) 
@@ -78,7 +95,7 @@ class LinkedList {
         if (this.isEmpty()) {
             return -1;
         }
-        for(var i = 1; i <= this.length; i++) {
+        for(var i = 0; i < this.length; i++) {
             if(tempNode.data == data) return i;
             tempNode = tempNode.next;
         }
@@ -87,11 +104,12 @@ class LinkedList {
 }
 
 list = new LinkedList();
-list.append(123);
-list.append(413);
+list.append(1);
+list.append(2);
 list.append(3);
-list.append(80);
-list.append(16);
+list.append(4);
+list.append(5);
+list.insertAt(0,000)
+list.insertAt(6,999)
 console.log(list);
-console.log(list.at(4));
 module.exports = LinkedList;
