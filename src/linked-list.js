@@ -99,10 +99,43 @@ class LinkedList {
     }
 
     deleteAt(index) {
+        var tempNode = this._head;
+        if(index < 0 || index > this.length) {
+            return undefined;
+        }
+        if(index == 0) {
+            tempNode = this._head;
+            this._head = tempNode.next;
+            this._head.prev = null;  
+            this.length--;
+            return this;
+        }
+        if(index == this.length-1) {
+            tempNode = this._tail;
+            this._tail = tempNode.prev;
+            this._tail.next = null;
+            this.length--;
+            return this;  
+        }
+        for(var i = 1; i < this.length - 1; i++) {
+            if(i == index) {
+                tempNode.next.prev = tempNode.prev;
+                tempNode.prev.next = tempNode.next;
+                this.length--;
+                return this; 
+            }
+            tempNode = tempNode.next;
+        }
 
     }
 
-    reverse() {}
+    reverse() {
+        var count = this.length;
+        for(var i = 0; i < count; i++) {
+            this.insertAt(i,this.at(count-1));
+            this.deleteAt(count);
+        }
+    }
 
     indexOf(data) {
         var tempNode = this._head;
