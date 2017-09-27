@@ -14,7 +14,7 @@ class LinkedList {
                 this._tail = node;
             }
             else {
-                this._tail = node;
+                this._tail.next = node;
                 node.prev = this._tail;
                 this._tail = node;
             }
@@ -23,16 +23,66 @@ class LinkedList {
     }
 
     head() {
-        return this._head.data;
+        if (this._head == null) return null;
+        else return this._head.data;
     }
 
     tail() {
-        return this._tail.data;
+        if (this._tail == null) return null;
+        else return this._tail.data;
     }
 
-    at(index) {}
+    at(index) {
+        var tempNode = this._head;
+        if(this.isEmpty() || index < 0 || index > this.length) {
+            return undefined;
+        }
+        for( var i = 0; i < this.length; i++) {
+            if (i == index) return tempNode.data;
+            tempNode = tempNode.next; 
+        }
+        return this;
+    }
 
-    insertAt(index, data) {}
+    insertAt(index, data) {
+        var node = new Node(data),
+            tempNode;
+        if(index < 0 || index > this.length) {
+            return undefined;
+        }
+        if(this.isEmpty()) {
+            this._head = node;
+            this._tail = node;
+            this.length++;
+            return this;
+        }
+        if(index == 0) {
+            node.next = this._head;
+            this._head.prev = node;
+            this._head = node;
+            this.length++;
+            return this;
+        }
+        tempNode = this._head.next;
+        for(var i = 1; i < this.length; i++) {
+            if (i == index ) {
+                node.next = tempNode;
+                node.prev = tempNode.prev;
+                tempNode.prev.next = node;
+                tempNode.prev = node;
+                this.length++
+                return this;
+            }
+            tempNode = tempNode.next
+        }
+        if(index == this.length) {
+            node.prev = this._tail;
+            this._tail.next = node;
+            this._tail = node;
+            this.length++;
+            return this;
+        }
+    }
 
     isEmpty() {
         if(this.length == 0) 
@@ -41,15 +91,76 @@ class LinkedList {
             return false;
     }
 
-    clear() {}
+    clear() {
+        var tempNode;
+        while(this.length > 0) {
+            if(this.length == 1) {
+                this._head = null;
+                this._tail = null;
+            } else {
+                tempNode = this._tail.prev;
+                tempNode.next = null;
+                this._tail = tempNode;
+            }
+            this.length--;
+        }
+        return this;
+    }
 
-    deleteAt(index) {}
+    deleteAt(index) {
+        var tempNode = this._head;
+        if(index < 0 || index > this.length) {
+            return undefined;
+        }
+        if(index == 0) {
+            tempNode = this._head;
+            this._head = tempNode.next;
+            this._head.prev = null;  
+            this.length--;
+            return this;
+        }
+        if(index == this.length-1) {
+            tempNode = this._tail;
+            this._tail = tempNode.prev;
+            this._tail.next = null;
+            this.length--;
+            return this;  
+        }
+        for(var i = 1; i < this.length - 1; i++) {
+            if(i == index) {
+                tempNode.next.prev = tempNode.prev;
+                tempNode.prev.next = tempNode.next;
+                this.length--;
+                return this; 
+            }
+            tempNode = tempNode.next;
+        }
 
-    reverse() {}
+    }
 
-    indexOf(data) {}
+    reverse() {
+        var count = this.length;
+        for(var i = 0; i < count; i++) {
+            this.insertAt(i,this.at(count-1));
+            this.deleteAt(count);
+        }
+        return this;
+    }
+
+    indexOf(data) {
+        var tempNode = this._head;
+        if (this.isEmpty()) {
+            return -1;
+        }
+        for(var i = 0; i < this.length; i++) {
+            if(tempNode.data == data) return i;
+            tempNode = tempNode.next;
+        }
+        return(-1);
+    }
 }
 
 list = new LinkedList();
-console.log(list.append());
+list.append(4).reverse().clear().insertAt(0, 3);
+console.log(list);
 module.exports = LinkedList;
