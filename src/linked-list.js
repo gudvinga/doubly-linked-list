@@ -41,13 +41,20 @@ class LinkedList {
             if (i == index) return tempNode.data;
             tempNode = tempNode.next; 
         }
+        return this;
     }
 
     insertAt(index, data) {
         var node = new Node(data),
-            tempNode = this._head.next;
+            tempNode;
         if(index < 0 || index > this.length) {
             return undefined;
+        }
+        if(this.isEmpty()) {
+            this._head = node;
+            this._tail = node;
+            this.length++;
+            return this;
         }
         if(index == 0) {
             node.next = this._head;
@@ -56,6 +63,7 @@ class LinkedList {
             this.length++;
             return this;
         }
+        tempNode = this._head.next;
         for(var i = 1; i < this.length; i++) {
             if (i == index ) {
                 node.next = tempNode;
@@ -96,6 +104,7 @@ class LinkedList {
             }
             this.length--;
         }
+        return this;
     }
 
     deleteAt(index) {
@@ -135,6 +144,7 @@ class LinkedList {
             this.insertAt(i,this.at(count-1));
             this.deleteAt(count);
         }
+        return this;
     }
 
     indexOf(data) {
